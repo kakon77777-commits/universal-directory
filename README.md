@@ -8,6 +8,11 @@ This is also the real-world test bed for
 every piece of live data on this site was fetched by that crawler, not typed
 in by hand.
 
+**Planned deployment**: as a subdomain of the EveMissLab Catalog (the
+company-wide project index, `D:\Ai\網站群\Evemisslab catalog`) —
+`directory.evemisslabcatalog.com`. Not yet actionable: that domain isn't
+purchased and the catalog itself isn't deployed yet.
+
 ## Scope (doc2's own 階段一 MVP)
 
 - 5 hand-defined categories, 15 hand-confirmed entities (`config/*.yaml`) —
