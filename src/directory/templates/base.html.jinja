@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}通用動態策展目錄{% endblock %}</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #131722;
+    --panel-border: #232838;
+    --text: #e6e9f0;
+    --muted: #8b93a7;
+    --accent: #7dd3fc;
+    --accent-2: #a78bfa;
+    --good: #4ade80;
+    --bad: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header.site {
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  header.site .brand { font-weight: 700; font-size: 1.1rem; }
+  header.site .brand small { color: var(--muted); font-weight: 400; margin-left: 0.5rem; }
+  main { max-width: 960px; margin: 0 auto; padding: 2rem; }
+  footer { max-width: 960px; margin: 0 auto; padding: 1.5rem 2rem 3rem; color: var(--muted); font-size: 0.85rem; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(125, 211, 252, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(125, 211, 252, 0.35);
+  }
+  .score {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--accent-2);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--panel-border); }
+  th { color: var(--muted); font-weight: 600; }
+  .muted { color: var(--muted); }
+  .factors { font-size: 0.8rem; margin-top: 0.35rem; }
+  .factors .pos { color: var(--good); }
+  .factors .neg { color: var(--bad); }
+  .rank-list { list-style: none; padding: 0; margin: 0; }
+  .rank-list li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.75rem 0; border-bottom: 1px solid var(--panel-border);
+    gap: 1rem;
+  }
+  .rank-list li:last-child { border-bottom: none; }
+  .rank-num { color: var(--muted); width: 2rem; flex-shrink: 0; }
+  code { background: rgba(255,255,255,0.06); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85em; }
+  .methodology { font-size: 0.85rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="brand"><a href="/">通用動態策展目錄</a><small>UDCD MVP</small></div>
+  <div class="muted">{% block header_right %}{% endblock %}</div>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer>
+  由 <a href="https://github.com/kakon77777-commits/ai-web-research">ai-web-research</a> 爬取、以確定性版本化程式評分（無 LLM 判斷排名）。
+  {% block footer_extra %}{% endblock %}
+</footer>
+</body>
+</html>

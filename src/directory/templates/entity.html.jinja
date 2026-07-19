@@ -1,0 +1,46 @@
+{% extends "base.html.jinja" %}
+{% block title %}{{ entity.canonical_name }} — 通用動態策展目錄{% endblock %}
+{% block header_right %}<a href="/">&larr; 返回首頁</a>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 style="margin-top:0;">{{ entity.canonical_name }}</h1>
+  <p class="muted" style="margin-top:-0.5rem;">{{ entity.tagline }}</p>
+  {% if entity.description %}<p>{{ entity.description }}</p>{% endif %}
+
+  <p>
+    {% for c in entity.categories %}
+    <a class="badge" href="/categories/{{ c.category_id }}/">{{ c.name }}</a>
+    {% endfor %}
+  </p>
+
+  <p>
+    {% if entity.urls.github %}<a href="{{ entity.urls.github }}">GitHub</a>{% endif %}
+    {% if entity.urls.homepage and entity.urls.homepage != entity.urls.github %}
+      &middot; <a href="{{ entity.urls.homepage }}">官方網站</a>
+    {% endif %}
+  </p>
+  <p class="muted" style="font-size:0.85rem; margin-bottom:0;">最後更新：{{ entity.updated_at }}</p>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0;">證據鏈（Evidence）</h2>
+  <table>
+    <thead>
+      <tr><th>欄位</th><th>值</th><th>來源</th><th>Tier</th><th>抓取時間</th><th>信心</th></tr>
+    </thead>
+    <tbody>
+      {% for ev in entity.evidence %}
+      <tr>
+        <td>{{ ev.field_name }}</td>
+        <td>{{ ev.value }}</td>
+        <td><a href="{{ ev.source_url }}">{{ ev.source_url }}</a></td>
+        <td class="muted">{{ ev.source_tier }}</td>
+        <td class="muted">{{ ev.fetched_at }}</td>
+        <td class="muted">{{ ev.confidence }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html.jinja" %}
+{% block title %}{{ category.name }} — 通用動態策展目錄{% endblock %}
+{% block header_right %}<a href="/">&larr; 返回首頁</a>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 style="margin-top:0;">{{ category.name }}</h1>
+  <p class="muted">{{ category.definition }}</p>
+  <p class="methodology">
+    評分方式（<code>{{ profile_version }}</code>）：40% GitHub 活躍度（距上次 push 的時間衰減）
+    + 40% 星數（同分類內以 log 正規化）+ 20% 授權寬鬆度，Archived 專案扣 5 分。
+    最後產生：{{ generated_at }}
+  </p>
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>#</th><th>名稱</th><th>分數</th><th>說明</th></tr>
+    </thead>
+    <tbody>
+      {% for e in entities %}
+      <tr>
+        <td class="muted">{{ e.rank }}</td>
+        <td>
+          <a href="/entities/{{ e.slug }}/">{{ e.canonical_name }}</a>
+          <div class="muted" style="font-size:0.85rem;">{{ e.tagline }}</div>
+        </td>
+        <td class="score">{{ e.score }}</td>
+        <td class="factors">
+          {% for p in e.positive_factors %}<div class="pos">+ {{ p }}</div>{% endfor %}
+          {% for n in e.negative_factors %}<div class="neg">- {{ n }}</div>{% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
