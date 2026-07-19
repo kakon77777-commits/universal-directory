@@ -8,11 +8,16 @@ This is also the real-world test bed for
 every piece of live data on this site was fetched by that crawler, not typed
 in by hand.
 
-**Planned deployment**: as a subdomain of the EveMiss Technology hub
-(`https://evemiss.com`, the actual company navigation site) —
-`directory.evemiss.com`. Not yet actionable: evemiss.com's own hosting/
-deployment mechanism isn't confirmed yet (static HTML, no wrangler/CNAME/
-build config found in its source tree).
+**Deployment**: Cloudflare Pages project `universal-directory`
+(`site/` deployed via `wrangler pages deploy site --project-name
+universal-directory --branch main`), intended to live at
+`directory.evemiss.com` (a subdomain of the EveMiss Technology hub,
+`https://evemiss.com`). The Pages custom-domain registration is done via
+the Cloudflare API; the DNS CNAME (`directory` →
+`universal-directory.pages.dev`, proxied) has to be added by hand in the
+Cloudflare dashboard for the `evemiss.com` zone — the wrangler OAuth
+token used for deploys only has `zone:read`, not DNS-record write, so an
+agent can't create it via API.
 
 ## Scope (doc2's own 階段一 MVP)
 
