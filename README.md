@@ -8,10 +8,11 @@ This is also the real-world test bed for
 every piece of live data on this site was fetched by that crawler, not typed
 in by hand.
 
-**Planned deployment**: as a subdomain of the EveMissLab Catalog (the
-company-wide project index, `D:\Ai\網站群\Evemisslab catalog`) —
-`directory.evemisslabcatalog.com`. Not yet actionable: that domain isn't
-purchased and the catalog itself isn't deployed yet.
+**Planned deployment**: as a subdomain of the EveMiss Technology hub
+(`https://evemiss.com`, the actual company navigation site) —
+`directory.evemiss.com`. Not yet actionable: evemiss.com's own hosting/
+deployment mechanism isn't confirmed yet (static HTML, no wrangler/CNAME/
+build config found in its source tree).
 
 ## Scope (doc2's own 階段一 MVP)
 
