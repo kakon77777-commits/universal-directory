@@ -110,3 +110,10 @@ entities:
     github_repo: kortix-ai/suna
     primary_category: agent-orchestration
     license_hint: Elastic-2.0
+
+  - canonical_name: ai-web-research
+    entity_type: open_source_tool
+    tagline: "確定性、無 LLM 依賴的 robots/sitemap-aware 爬蟲，輸出 LLM 可用 Markdown 與可續傳 frontier"
+    github_repo: kakon77777-commits/ai-web-research
+    primary_category: ai-crawler
+    license_hint: MIT
