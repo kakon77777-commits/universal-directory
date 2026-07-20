@@ -19,9 +19,30 @@ Cloudflare dashboard for the `evemiss.com` zone — the wrangler OAuth
 token used for deploys only has `zone:read`, not DNS-record write, so an
 agent can't create it via API.
 
+## Languages
+
+English is the default/primary language; Traditional Chinese is the
+secondary language — same architecture as evemiss.com (proxied through
+this same session): a Cloudflare Pages Advanced Mode worker
+(`site_worker/_worker.js`, copied to `site/_worker.js` on every build)
+negotiates `lang` cookie > IP country > `Accept-Language` > English, and
+[matrix-select](https://github.com/kakon77777-commits/matrix-select) is
+the language switcher (copied into `site/` from its own source repo on
+every build, same component embedded in evemiss.com and agiright.org).
+
+`config/categories.yaml`/`config/entities.yaml` content
+(name/definition/tagline) is English-source; `src/directory/i18n.py`'s
+`CONTENT_ZH` holds the Traditional Chinese translations, keyed by the
+exact English string — a string with no entry there just falls back to
+English rather than erroring, so adding a third language later is
+additive only (one more nested dict + one more `SUPPORTED_LANGS` entry),
+no data-model change. `python -m directory build` generates every
+supported language automatically: English at the site root, Chinese
+under `/zh/`.
+
 ## Scope (doc2's own 階段一 MVP)
 
-- 5 hand-defined categories, 15 hand-confirmed entities (`config/*.yaml`) —
+- 5 hand-defined categories, 16 hand-confirmed entities (`config/*.yaml`) —
   this stands in for Discovery Agent + 人工確認候選 for now.
 - Ingestion pulls two evidence tiers per entity:
   - **Tier 1** (official API): GitHub REST API — stars, license (SPDX),
@@ -81,7 +102,8 @@ server.
 .venv/Scripts/python.exe -m pytest -q
 ```
 
-24 unit tests cover the store, scoring formula edge cases (archived, missing
-push date, unknown/mixed license), and site generation — no live network
-calls. The ingestion pipeline itself is exercised live via `directory build`
-against the real GitHub API and real GitHub pages.
+28 unit tests cover the store, scoring formula edge cases (archived, missing
+push date, unknown/mixed license), site generation, and the multi-language
+build orchestration — no live network calls. The ingestion pipeline itself
+is exercised live via `directory build` against the real GitHub API and
+real GitHub pages.
