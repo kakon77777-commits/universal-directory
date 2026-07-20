@@ -69,12 +69,19 @@ def test_build_site_entity_page_shows_evidence_source(tmp_path: Path):
     store.close()
 
 
-def test_build_site_is_idempotent_on_rerun(tmp_path: Path):
+def test_build_site_does_not_clean_output_dir_itself(tmp_path: Path):
+    """build_site() no longer owns cleaning the output tree — a caller
+    building multiple languages into sibling directories under one site
+    root must only clean that root once (see cli.py's
+    _build_all_languages), not per-language build_site() call, or an
+    en-then-zh build would wipe the zh/ subdir the moment the en pass
+    (targeting the same root) ran. Cleanliness across a full multi-language
+    build is exercised in test_cli.py instead."""
     store = _seeded_store(tmp_path)
     site_dir = tmp_path / "site"
     build_site(store, site_dir, NOW.isoformat())
-    (site_dir / "stray.txt").write_text("leftover from a previous build", encoding="utf-8")
+    (site_dir / "stray.txt").write_text("not cleaned by build_site() itself", encoding="utf-8")
 
     build_site(store, site_dir, NOW.isoformat())
-    assert not (site_dir / "stray.txt").exists()
+    assert (site_dir / "stray.txt").exists()
     store.close()

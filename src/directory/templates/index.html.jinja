@@ -1,20 +1,18 @@
 {% extends "base.html.jinja" %}
-{% block title %}通用動態策展目錄 — AI 爬蟲與 Agent 工具{% endblock %}
-{% block header_right %}最後產生：{{ generated_at }}{% endblock %}
+{% block title %}{{ t.index_title }}{% endblock %}
+{% block header_right %}{{ t.generated_at_label }}{{ generated_at }}{% endblock %}
 
 {% block content %}
 <div class="card">
   <p class="muted" style="margin-top:0;">
-    收錄範圍：AI 爬蟲、瀏覽器 Agent、深度研究 Agent 與 Agent 編排平台的開源工具。
-    每個項目的分數皆由版本化程式（<code>{{ profile_version }}</code>）依 GitHub 活躍度、
-    星數與授權計算，不由模型主觀判斷。
+    {{ t.index_intro.format(profile_version=profile_version) }}
   </p>
 </div>
 
 {% for cat in categories %}
 <div class="card">
   <h2 style="margin-top:0;"><a href="/categories/{{ cat.category_id }}/">{{ cat.name }}</a>
-    <span class="muted" style="font-weight:400; font-size:0.85rem;">（{{ cat.count }} 項）</span>
+    <span class="muted" style="font-weight:400; font-size:0.85rem;">({{ cat.count }} {{ t.items_suffix }})</span>
   </h2>
   <p class="muted" style="margin-top:-0.5rem;">{{ cat.definition }}</p>
   <ul class="rank-list">
@@ -29,7 +27,7 @@
     </li>
     {% endfor %}
   </ul>
-  <p style="margin-bottom:0;"><a href="/categories/{{ cat.category_id }}/">查看完整排行 &rarr;</a></p>
+  <p style="margin-bottom:0;"><a href="/categories/{{ cat.category_id }}/">{{ t.view_full_ranking }}</a></p>
 </div>
 {% endfor %}
 {% endblock %}

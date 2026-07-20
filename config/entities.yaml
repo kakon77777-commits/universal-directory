@@ -4,116 +4,120 @@
 # (doc2 Appendix D). homepage == github_repo deliberately: doc1 doesn't
 # establish a separate marketing domain for these tools with certainty, and
 # GitHub itself is a valid, always-correct source rather than guessing one.
+#
+# taglines are English-primary (site default language) — see
+# src/directory/i18n.py's CONTENT_ZH for the Traditional Chinese versions,
+# keyed by these exact English strings.
 
 entities:
   - canonical_name: Crawl4AI
     entity_type: open_source_tool
-    tagline: "本地、自架、LLM-Friendly Web Crawler"
+    tagline: "Local, self-hosted, LLM-friendly web crawler"
     github_repo: unclecode/crawl4ai
     primary_category: ai-crawler
     license_hint: Apache-2.0
 
   - canonical_name: Firecrawl
     entity_type: open_source_tool
-    tagline: "完整 Web Context API 與 Agent Web Data 平台"
+    tagline: "Full Web Context API and agent web-data platform"
     github_repo: firecrawl/firecrawl
     primary_category: ai-crawler
     license_hint: AGPL-3.0
 
   - canonical_name: ScrapeGraphAI
     entity_type: open_source_tool
-    tagline: "自然語言驅動的圖式資料抽取框架"
+    tagline: "Natural-language-driven graph-based data extraction framework"
     github_repo: ScrapeGraphAI/Scrapegraph-ai
     primary_category: ai-crawler
     license_hint: MIT
 
   - canonical_name: Crawlee Python
     entity_type: open_source_tool
-    tagline: "現代 Python 爬蟲與瀏覽器自動化工程底座"
+    tagline: "Modern Python crawling and browser automation engineering foundation"
     github_repo: apify/crawlee-python
     primary_category: crawler-framework
     license_hint: Apache-2.0
 
   - canonical_name: WebClaw
     entity_type: open_source_tool
-    tagline: "Rust 實作的 CLI、MCP 與自架網頁抽取工具"
+    tagline: "Rust-built CLI, MCP, and self-hosted web extraction tool"
     github_repo: 0xMassi/webclaw
     primary_category: ai-crawler
     license_hint: AGPL-3.0
 
   - canonical_name: Browser Use
     entity_type: open_source_tool
-    tagline: "通用 AI Browser Agent"
+    tagline: "General-purpose AI browser agent"
     github_repo: browser-use/browser-use
     primary_category: browser-agent
     license_hint: MIT
 
   - canonical_name: Stagehand
     entity_type: open_source_tool
-    tagline: "AI 與程式碼混合的生產級瀏覽器自動化框架"
+    tagline: "Production-grade browser automation framework mixing AI and code"
     github_repo: browserbase/stagehand
     primary_category: browser-agent
     license_hint: MIT
 
   - canonical_name: Skyvern
     entity_type: open_source_tool
-    tagline: "LLM、視覺模型與 Playwright 結合的工作流自動化平台"
+    tagline: "Workflow automation platform combining LLMs, vision models, and Playwright"
     github_repo: Skyvern-AI/skyvern
     primary_category: browser-agent
     license_hint: AGPL-3.0
 
   - canonical_name: Nanobrowser
     entity_type: open_source_tool
-    tagline: "直接運行於 Chrome／Edge 的本地多 Agent 擴充功能"
+    tagline: "Local multi-agent browser extension running directly in Chrome/Edge"
     github_repo: nanobrowser/nanobrowser
     primary_category: browser-agent
     license_hint: Apache-2.0
 
   - canonical_name: GPT Researcher
     entity_type: open_source_tool
-    tagline: "完整的開源深度研究 Agent"
+    tagline: "Full open-source deep research agent"
     github_repo: assafelovic/gpt-researcher
     primary_category: research-agent
     license_hint: Apache-2.0
 
   - canonical_name: Open Deep Research
     entity_type: open_source_tool
-    tagline: "LangGraph 生態的可配置深度研究 Agent"
+    tagline: "Configurable deep research agent in the LangGraph ecosystem"
     github_repo: langchain-ai/open_deep_research
     primary_category: research-agent
     license_hint: MIT
 
   - canonical_name: SurfSense
     entity_type: open_source_tool
-    tagline: "競爭情報、持續監測與研究知識庫平台"
+    tagline: "Competitive intelligence, continuous monitoring, and research knowledge-base platform"
     github_repo: MODSetter/SurfSense
     primary_category: research-agent
-    license_hint: "Apache-2.0 (部分目錄 BSL-1.1)"
+    license_hint: "Apache-2.0 (some directories BSL-1.1)"
 
   - canonical_name: DeepSearcher
     entity_type: open_source_tool
-    tagline: "私有文件、向量資料庫與深度搜尋"
+    tagline: "Private documents, vector database, and deep search"
     github_repo: zilliztech/deep-searcher
     primary_category: research-agent
     license_hint: Apache-2.0
 
   - canonical_name: OpenClaw
     entity_type: open_source_tool
-    tagline: "本地優先、長時間運行的個人 Agent 控制平面"
+    tagline: "Local-first, long-running personal agent control plane"
     github_repo: openclaw/openclaw
     primary_category: agent-orchestration
     license_hint: MIT
 
   - canonical_name: Kortix/Suna
     entity_type: open_source_tool
-    tagline: "公司級 Agent Command Center"
+    tagline: "Enterprise-grade agent command center"
     github_repo: kortix-ai/suna
     primary_category: agent-orchestration
     license_hint: Elastic-2.0
 
   - canonical_name: ai-web-research
     entity_type: open_source_tool
-    tagline: "確定性、無 LLM 依賴的 robots/sitemap-aware 爬蟲，輸出 LLM 可用 Markdown 與可續傳 frontier"
+    tagline: "Deterministic, LLM-independent robots/sitemap-aware crawler producing LLM-ready Markdown with a resumable frontier"
     github_repo: kakon77777-commits/ai-web-research
     primary_category: ai-crawler
     license_hint: MIT

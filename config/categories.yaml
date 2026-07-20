@@ -1,25 +1,25 @@
 categories:
   - category_id: ai-crawler
-    name: "AI 爬蟲"
-    definition: "使用語義模型理解頁面、生成/修復抽取規則、或將網頁轉為 LLM 可用格式的爬蟲工具。"
+    name: "AI Crawlers"
+    definition: "Crawling tools that use semantic models to understand pages, generate or repair extraction rules, or convert web pages into LLM-usable formats."
     ranking_profile: open_source_ai_tools_v1
 
   - category_id: crawler-framework
-    name: "爬蟲框架"
-    definition: "提供 URL Frontier、重試、限速、Session 管理等確定性爬蟲工程底座的框架。"
+    name: "Crawler Frameworks"
+    definition: "Frameworks providing deterministic crawling infrastructure — URL frontier, retry, rate limiting, session management."
     ranking_profile: open_source_ai_tools_v1
 
   - category_id: browser-agent
-    name: "瀏覽器 Agent"
-    definition: "由 AI 驅動、可自行決定點擊/輸入/滾動/導航等瀏覽器互動的自動化工具。"
+    name: "Browser Agents"
+    definition: "AI-driven automation tools that autonomously decide browser interactions — clicking, typing, scrolling, navigating."
     ranking_profile: open_source_ai_tools_v1
 
   - category_id: research-agent
-    name: "深度研究 Agent"
-    definition: "自動搜尋、閱讀、交叉查證多來源並生成附引用報告的研究型 Agent。"
+    name: "Deep Research Agents"
+    definition: "Research agents that automatically search, read, cross-verify multiple sources, and generate cited reports."
     ranking_profile: open_source_ai_tools_v1
 
   - category_id: agent-orchestration
-    name: "Agent 編排平台"
-    definition: "提供排程、技能、多 Agent 路由與長時間運行控制平面的平台。"
+    name: "Agent Orchestration Platforms"
+    definition: "Platforms providing scheduling, skills, multi-agent routing, and long-running control planes."
     ranking_profile: open_source_ai_tools_v1

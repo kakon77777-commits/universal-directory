@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="{{ html_lang | default('en') }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}通用動態策展目錄{% endblock %}</title>
+<title>{% block title %}{{ t.site_title }}{% endblock %}</title>
+<link rel="stylesheet" href="/matrix-select.css">
 <style>
   :root {
     --bg: #0b0e14;
@@ -31,12 +32,13 @@
     border-bottom: 1px solid var(--panel-border);
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
   header.site .brand { font-weight: 700; font-size: 1.1rem; }
   header.site .brand small { color: var(--muted); font-weight: 400; margin-left: 0.5rem; }
+  header.site .header-right { display: flex; align-items: center; gap: 1rem; color: var(--muted); }
   main { max-width: 960px; margin: 0 auto; padding: 2rem; }
   footer { max-width: 960px; margin: 0 auto; padding: 1.5rem 2rem 3rem; color: var(--muted); font-size: 0.85rem; }
   .card {
@@ -78,19 +80,43 @@
   .rank-num { color: var(--muted); width: 2rem; flex-shrink: 0; }
   code { background: rgba(255,255,255,0.06); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85em; }
   .methodology { font-size: 0.85rem; color: var(--muted); }
+  #lang-switcher { min-width: 8rem; }
+  .matrix-select { --ms-panel-width: 14rem; }
 </style>
 </head>
 <body>
 <header class="site">
-  <div class="brand"><a href="/">通用動態策展目錄</a><small>UDCD MVP</small></div>
-  <div class="muted">{% block header_right %}{% endblock %}</div>
+  <div class="brand"><a href="/">{{ t.site_title }}</a><small>{{ t.site_title_short }}</small></div>
+  <div class="header-right">
+    <span>{% block header_right %}{% endblock %}</span>
+    <div id="lang-switcher"></div>
+  </div>
 </header>
 <main>
 {% block content %}{% endblock %}
 </main>
 <footer>
-  由 <a href="https://github.com/kakon77777-commits/ai-web-research">ai-web-research</a> 爬取、以確定性版本化程式評分（無 LLM 判斷排名）。
+  {{ t.footer_credit | safe }}
   {% block footer_extra %}{% endblock %}
 </footer>
+<script type="module">
+  import('/matrix-select.js').then(({ MatrixSelect }) => {
+    const container = document.getElementById('lang-switcher');
+    if (!container) return;
+    MatrixSelect.create(container, {
+      items: [
+        { value: 'en', label: 'English', sublabel: 'English' },
+        { value: 'zh', label: '繁體中文', sublabel: 'Chinese (Traditional)' },
+      ],
+      value: '{{ lang | default("en") }}',
+      placeholder: 'Search…',
+      columns: 1,
+      onChange: (value) => {
+        document.cookie = `lang=${value};path=/;max-age=31536000;samesite=lax`;
+        location.reload();
+      },
+    });
+  });
+</script>
 </body>
 </html>
