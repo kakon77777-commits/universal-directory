@@ -11,27 +11,46 @@
   </p>
 </div>
 
-<div class="card">
-  <table>
-    <thead>
-      <tr><th>{{ t.th_rank }}</th><th>{{ t.th_name }}</th><th>{{ t.th_score }}</th><th>{{ t.th_notes }}</th></tr>
-    </thead>
-    <tbody>
-      {% for e in entities %}
-      <tr>
-        <td class="muted">{{ e.rank }}</td>
-        <td>
-          <a href="/entities/{{ e.slug }}/">{{ e.canonical_name }}</a>
-          <div class="muted" style="font-size:0.85rem;">{{ e.tagline }}</div>
-        </td>
-        <td class="score">{{ e.score }}</td>
-        <td class="factors">
-          {% for p in e.positive_factors %}<div class="pos">+ {{ p }}</div>{% endfor %}
-          {% for n in e.negative_factors %}<div class="neg">- {{ n }}</div>{% endfor %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="filter-bar">
+  <input type="search" id="entity-filter" placeholder="{{ t.filter_placeholder }}" autocomplete="off">
 </div>
+
+<div class="entity-grid" id="entity-grid">
+  {% for e in entities %}
+  <a class="card entity-card" href="/entities/{{ e.slug }}/" data-filter-text="{{ (e.canonical_name ~ ' ' ~ e.tagline) | lower }}">
+    <div class="entity-card-top">
+      <span class="rank-num">#{{ e.rank }}</span>
+      <span class="score">{{ e.score }}</span>
+    </div>
+    <h3>{{ e.canonical_name }}</h3>
+    <p class="muted tagline">{{ e.tagline }}</p>
+    <div class="factors">
+      {% for p in e.positive_factors %}<div class="pos">+ {{ p }}</div>{% endfor %}
+      {% for n in e.negative_factors %}<div class="neg">- {{ n }}</div>{% endfor %}
+    </div>
+  </a>
+  {% endfor %}
+</div>
+<p class="filter-empty" id="filter-empty">{{ t.no_results }}</p>
+{% endblock %}
+
+{% block footer_extra %}
+<script>
+  (function () {
+    var input = document.getElementById('entity-filter');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('#entity-grid .entity-card'));
+    var empty = document.getElementById('filter-empty');
+    if (!input || !cards.length) return;
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase();
+      var visible = 0;
+      cards.forEach(function (card) {
+        var match = !q || card.getAttribute('data-filter-text').indexOf(q) !== -1;
+        card.style.display = match ? '' : 'none';
+        if (match) visible += 1;
+      });
+      empty.style.display = visible === 0 ? 'block' : 'none';
+    });
+  })();
+</script>
 {% endblock %}

@@ -39,8 +39,8 @@
   header.site .brand { font-weight: 700; font-size: 1.1rem; }
   header.site .brand small { color: var(--muted); font-weight: 400; margin-left: 0.5rem; }
   header.site .header-right { display: flex; align-items: center; gap: 1rem; color: var(--muted); }
-  main { max-width: 960px; margin: 0 auto; padding: 2rem; }
-  footer { max-width: 960px; margin: 0 auto; padding: 1.5rem 2rem 3rem; color: var(--muted); font-size: 0.85rem; }
+  main { max-width: 1600px; margin: 0 auto; padding: 2rem; }
+  footer { max-width: 1600px; margin: 0 auto; padding: 1.5rem 2rem 3rem; color: var(--muted); font-size: 0.85rem; }
   .card {
     background: var(--panel);
     border: 1px solid var(--panel-border);
@@ -48,7 +48,58 @@
     padding: 1.25rem 1.5rem;
     margin-bottom: 1rem;
   }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  /* Dense entity-card matrix — desktop default is at least 3 across, and
+     keeps adding columns as the viewport widens instead of capping out, so
+     the wide `main` above actually gets used rather than leaving empty
+     margins. Collapses to a single filter+list mode on mobile instead of
+     just shrinking the same 3-column grid down to something cramped. */
+  .entity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (min-width: 1100px) { .entity-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1450px) { .entity-grid { grid-template-columns: repeat(5, 1fr); } }
+  .entity-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--text);
+    /* A category card on the homepage nests these directly inside another
+       .card of the same --panel color — without its own lighter shade
+       they'd blend into the parent with no visible separation. */
+    background: rgba(255, 255, 255, 0.04);
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  }
+  .entity-card:hover { border-color: var(--accent); background: rgba(255, 255, 255, 0.07); text-decoration: none; transform: translateY(-2px); }
+  .entity-card .entity-card-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .entity-card h3 { margin: 0; font-size: 1.05rem; }
+  .entity-card .tagline { margin: 0; font-size: 0.85rem; }
+  .entity-card .factors { margin-top: auto; }
+
+  .filter-bar { margin-bottom: 1rem; }
+  .filter-bar input {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    color: var(--text);
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+  }
+  .filter-bar input:focus { outline: none; border-color: var(--accent); }
+  .filter-empty { display: none; color: var(--muted); padding: 1rem 0; }
+
+  @media (max-width: 768px) {
+    main { padding: 1rem; }
+    .entity-grid { grid-template-columns: 1fr; }
+    .filter-bar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--bg);
+      padding: 0.75rem 0;
+      margin: -0.5rem 0 1rem;
+    }
+    .filter-bar input { padding: 0.9rem 1.1rem; font-size: 1.05rem; }
+  }
   .badge {
     display: inline-block;
     font-size: 0.75rem;
@@ -70,13 +121,6 @@
   .factors { font-size: 0.8rem; margin-top: 0.35rem; }
   .factors .pos { color: var(--good); }
   .factors .neg { color: var(--bad); }
-  .rank-list { list-style: none; padding: 0; margin: 0; }
-  .rank-list li {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding: 0.75rem 0; border-bottom: 1px solid var(--panel-border);
-    gap: 1rem;
-  }
-  .rank-list li:last-child { border-bottom: none; }
   .rank-num { color: var(--muted); width: 2rem; flex-shrink: 0; }
   code { background: rgba(255,255,255,0.06); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85em; }
   .methodology { font-size: 0.85rem; color: var(--muted); }

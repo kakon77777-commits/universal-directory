@@ -15,18 +15,18 @@
     <span class="muted" style="font-weight:400; font-size:0.85rem;">({{ cat.count }} {{ t.items_suffix }})</span>
   </h2>
   <p class="muted" style="margin-top:-0.5rem;">{{ cat.definition }}</p>
-  <ul class="rank-list">
+  <div class="entity-grid">
     {% for e in cat.top_entities %}
-    <li>
-      <div>
+    <a class="card entity-card" href="/entities/{{ e.slug }}/">
+      <div class="entity-card-top">
         <span class="rank-num">#{{ e.rank }}</span>
-        <a href="/entities/{{ e.slug }}/">{{ e.canonical_name }}</a>
-        <div class="muted" style="font-size:0.85rem;">{{ e.tagline }}</div>
+        <span class="score">{{ e.score }}</span>
       </div>
-      <span class="score">{{ e.score }}</span>
-    </li>
+      <h3>{{ e.canonical_name }}</h3>
+      <p class="muted tagline">{{ e.tagline }}</p>
+    </a>
     {% endfor %}
-  </ul>
+  </div>
   <p style="margin-bottom:0;"><a href="/categories/{{ cat.category_id }}/">{{ t.view_full_ranking }}</a></p>
 </div>
 {% endfor %}

@@ -49,10 +49,8 @@ UI_STRINGS: dict[Lang, dict[str, str]] = {
             "license permissiveness, minus 5 points if archived. Last generated: "
             "{generated_at}"
         ),
-        "th_rank": "#",
-        "th_name": "Name",
-        "th_score": "Score",
-        "th_notes": "Notes",
+        "filter_placeholder": "Filter by name or tagline…",
+        "no_results": "No tools match your filter.",
         "th_field": "Field",
         "th_value": "Value",
         "th_source": "Source",
@@ -87,10 +85,8 @@ UI_STRINGS: dict[Lang, dict[str, str]] = {
             "減）+ 40% 星數（同分類內以 log 正規化）+ 20% 授權寬鬆度，Archived 專案扣 "
             "5 分。最後產生：{generated_at}"
         ),
-        "th_rank": "#",
-        "th_name": "名稱",
-        "th_score": "分數",
-        "th_notes": "說明",
+        "filter_placeholder": "依名稱或簡介篩選…",
+        "no_results": "沒有符合篩選條件的工具。",
         "th_field": "欄位",
         "th_value": "值",
         "th_source": "來源",
