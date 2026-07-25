@@ -1,0 +1,24 @@
+{% extends "base.html.jinja" %}
+{% block title %}{{ t.archive_index_title }} — {{ t.site_title }}{% endblock %}
+{% block header_right %}<a href="/">{{ t.back_home }}</a>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 style="margin-top:0;">{{ t.archive_index_title }}</h1>
+  <p class="muted" style="margin-bottom:0;">{{ t.archive_index_intro }}</p>
+</div>
+
+{% if months %}
+<div class="card">
+  <ul class="archive-month-list">
+    {% for m in months %}
+    <li><a href="/archive/{{ m.month_key }}/">{{ m.label }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% else %}
+<div class="card">
+  <p class="muted" style="margin:0;">{{ t.archive_no_months }}</p>
+</div>
+{% endif %}
+{% endblock %}

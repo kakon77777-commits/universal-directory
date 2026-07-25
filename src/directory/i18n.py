@@ -62,6 +62,18 @@ UI_STRINGS: dict[Lang, dict[str, str]] = {
         "evidence_chain_heading": "Evidence Chain",
         "yes": "Yes",
         "no": "No",
+        "nav_archive": "Archive",
+        "archive_index_title": "Monthly Archive",
+        "archive_index_intro": (
+            "A frozen, month-by-month snapshot of every category's rankings — since this "
+            "directory is mostly AI tools and models, it doubles as a running record of how "
+            "that field itself evolves. Landing on the site always shows the current "
+            "ranking; this is the history behind it."
+        ),
+        "archive_no_months": "No archived snapshots yet — check back after this month ends.",
+        "archive_banner": "You're viewing an archived snapshot from {month}, not the current ranking.",
+        "archive_view_latest": "View the current ranking →",
+        "archive_month_of": "Archived snapshot: {month}",
     },
     "zh": {
         "site_title": "通用動態策展目錄",
@@ -98,6 +110,16 @@ UI_STRINGS: dict[Lang, dict[str, str]] = {
         "evidence_chain_heading": "證據鏈（Evidence）",
         "yes": "是",
         "no": "否",
+        "nav_archive": "歷史存檔",
+        "archive_index_title": "月度歷史存檔",
+        "archive_index_intro": (
+            "每個分類排名的月度凍結快照——因為這個目錄收錄的大多是 AI 工具與模型，它同時也成了"
+            "這個領域自身演化的紀錄。進站看到的永遠是目前排名；這裡是排名背後的歷史。"
+        ),
+        "archive_no_months": "目前還沒有歷史存檔——這個月結束後再回來看看。",
+        "archive_banner": "你正在檢視 {month} 的歷史存檔快照，不是目前的排名。",
+        "archive_view_latest": "查看目前排名 →",
+        "archive_month_of": "歷史存檔：{month}",
     },
 }
 

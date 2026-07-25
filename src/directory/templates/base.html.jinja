@@ -87,6 +87,12 @@
   .filter-bar input:focus { outline: none; border-color: var(--accent); }
   .filter-empty { display: none; color: var(--muted); padding: 1rem 0; }
 
+  .archive-month-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; }
+  .archive-month-list a { display: block; padding: 0.6rem 0.9rem; border: 1px solid var(--panel-border); border-radius: 8px; }
+  .archive-month-list a:hover { border-color: var(--accent); text-decoration: none; }
+  .archive-banner { border-color: var(--accent-2); color: var(--text); }
+  .archive-banner a { margin-left: 0.35rem; }
+
   @media (max-width: 768px) {
     main { padding: 1rem; }
     .entity-grid { grid-template-columns: 1fr; }
@@ -133,6 +139,7 @@
   <div class="brand"><a href="/">{{ t.site_title }}</a><small>{{ t.site_title_short }}</small></div>
   <div class="header-right">
     <span>{% block header_right %}{% endblock %}</span>
+    <a href="/archive/">{{ t.nav_archive }}</a>
     <div id="lang-switcher"></div>
   </div>
 </header>

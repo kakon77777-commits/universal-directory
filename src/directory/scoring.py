@@ -148,3 +148,33 @@ def write_category_rankings(
         )
         store.write_ranking(s.entity_id, category_id, s.score, rank, explanation, now_iso)
     return scored
+
+
+def snapshot_month(store: DirectoryStore, month_key: str, now_iso: str) -> None:
+    """Freezes this build's rankings into the monthly archive (doc section
+    70: 從目錄到觀測系統 — a directory that keeps history becomes a record of
+    how a domain evolves). Independent of `write_category_rankings()`/
+    `ranking_results` above (that pathway is unused by the live build — see
+    sitegen.py, which reads `score_category()` directly): this computes
+    scores itself so the archive doesn't depend on wiring up an unrelated,
+    currently-dead table. Safe to call every build — `write_archive_snapshot_row`
+    upserts on (month_key, category_id, entity_id), so repeated calls within
+    the same calendar month just refresh that month; a new month_key never
+    touches a prior month's rows, which is what actually freezes them."""
+    for cat in store.all_categories():
+        scored = score_category(store, cat["category_id"])
+        for rank, s in enumerate(scored, start=1):
+            store.write_archive_snapshot_row(
+                month_key=month_key,
+                category_id=cat["category_id"],
+                category_name=cat["name"],
+                category_definition=cat["definition"],
+                entity_id=s.entity_id,
+                canonical_name=s.canonical_name,
+                tagline=s.tagline,
+                score=s.score,
+                rank=rank,
+                positive_factors_json=json.dumps(s.positive_factors, ensure_ascii=False),
+                negative_factors_json=json.dumps(s.negative_factors, ensure_ascii=False),
+                snapshotted_at=now_iso,
+            )

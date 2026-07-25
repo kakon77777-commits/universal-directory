@@ -80,6 +80,33 @@ CREATE TABLE IF NOT EXISTS ranking_results (
     explanation_json TEXT,
     calculated_at TEXT NOT NULL
 );
+
+-- Monthly historical archive (doc section 10/70: 版本歷史/從目錄到觀測系統 —
+-- a directory that keeps its own history becomes a record of how a domain
+-- evolves, not just its current state). Keyed by (month_key, category_id,
+-- entity_id) so re-snapshotting the SAME month (repeated builds within
+-- that month) upserts in place, while a NEW month_key just adds new rows
+-- without ever touching a past month's — the archive freezes itself
+-- naturally at each calendar month boundary, no separate "already
+-- snapshotted this month" bookkeeping needed. category_name/definition are
+-- denormalized (copied at snapshot time, not joined live) so a later
+-- rename/removal of a category in categories.yaml can't retroactively
+-- change what an old snapshot says it was.
+CREATE TABLE IF NOT EXISTS archive_snapshots (
+    month_key TEXT NOT NULL,
+    category_id TEXT NOT NULL,
+    category_name TEXT NOT NULL,
+    category_definition TEXT NOT NULL,
+    entity_id TEXT NOT NULL,
+    canonical_name TEXT NOT NULL,
+    tagline TEXT,
+    score REAL NOT NULL,
+    rank INTEGER NOT NULL,
+    positive_factors_json TEXT NOT NULL,
+    negative_factors_json TEXT NOT NULL,
+    snapshotted_at TEXT NOT NULL,
+    PRIMARY KEY (month_key, category_id, entity_id)
+);
 """
 
 
@@ -319,5 +346,65 @@ class DirectoryStore:
             ORDER BY r.rank ASC
             """,
             (category_id, SCORE_PROFILE_VERSION),
+        )
+        return cur.fetchall()
+
+    # -- monthly archive ---------------------------------------------------
+
+    def write_archive_snapshot_row(
+        self,
+        month_key: str,
+        category_id: str,
+        category_name: str,
+        category_definition: str,
+        entity_id: str,
+        canonical_name: str,
+        tagline: str | None,
+        score: float,
+        rank: int,
+        positive_factors_json: str,
+        negative_factors_json: str,
+        snapshotted_at: str,
+    ) -> None:
+        self._conn.execute(
+            """
+            INSERT INTO archive_snapshots (
+                month_key, category_id, category_name, category_definition,
+                entity_id, canonical_name, tagline, score, rank,
+                positive_factors_json, negative_factors_json, snapshotted_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(month_key, category_id, entity_id) DO UPDATE SET
+                category_name=excluded.category_name,
+                category_definition=excluded.category_definition,
+                canonical_name=excluded.canonical_name,
+                tagline=excluded.tagline,
+                score=excluded.score,
+                rank=excluded.rank,
+                positive_factors_json=excluded.positive_factors_json,
+                negative_factors_json=excluded.negative_factors_json,
+                snapshotted_at=excluded.snapshotted_at
+            """,
+            (
+                month_key, category_id, category_name, category_definition,
+                entity_id, canonical_name, tagline, score, rank,
+                positive_factors_json, negative_factors_json, snapshotted_at,
+            ),
+        )
+        self._conn.commit()
+
+    def archive_months(self) -> list[str]:
+        cur = self._conn.execute(
+            "SELECT DISTINCT month_key FROM archive_snapshots ORDER BY month_key DESC"
+        )
+        return [row[0] for row in cur.fetchall()]
+
+    def archive_snapshot_for_month(self, month_key: str) -> list[sqlite3.Row]:
+        self._conn.row_factory = sqlite3.Row
+        cur = self._conn.execute(
+            """
+            SELECT * FROM archive_snapshots WHERE month_key = ?
+            ORDER BY category_name ASC, rank ASC
+            """,
+            (month_key,),
         )
         return cur.fetchall()

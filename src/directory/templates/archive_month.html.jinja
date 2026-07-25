@@ -1,0 +1,35 @@
+{% extends "base.html.jinja" %}
+{% block title %}{{ t.archive_month_of.format(month=month_label) }} — {{ t.site_title }}{% endblock %}
+{% block header_right %}<a href="/archive/">{{ t.archive_index_title }}</a>{% endblock %}
+
+{% block content %}
+<div class="card archive-banner">
+  <p style="margin:0;">
+    {{ t.archive_banner.format(month=month_label) }}
+    <a href="/">{{ t.archive_view_latest }}</a>
+  </p>
+</div>
+
+{% for cat in categories %}
+<div class="card">
+  <h2 style="margin-top:0;">{{ cat.name }}</h2>
+  <p class="muted" style="margin-top:-0.5rem;">{{ cat.definition }}</p>
+  <div class="entity-grid">
+    {% for e in cat.entities %}
+    <a class="card entity-card" href="/entities/{{ e.slug }}/" data-filter-text="{{ (e.canonical_name ~ ' ' ~ (e.tagline or '')) | lower }}">
+      <div class="entity-card-top">
+        <span class="rank-num">#{{ e.rank }}</span>
+        <span class="score">{{ e.score }}</span>
+      </div>
+      <h3>{{ e.canonical_name }}</h3>
+      <p class="muted tagline">{{ e.tagline }}</p>
+      <div class="factors">
+        {% for p in e.positive_factors %}<div class="pos">+ {{ p }}</div>{% endfor %}
+        {% for n in e.negative_factors %}<div class="neg">- {{ n }}</div>{% endfor %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

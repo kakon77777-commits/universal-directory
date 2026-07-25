@@ -34,6 +34,22 @@ def slugify(name: str) -> str:
     return slug or "entity"
 
 
+_EN_MONTH_NAMES = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
+
+
+def _month_label(month_key: str, lang: Lang) -> str:
+    """month_key is always "YYYY-MM" (see cli.py: `now_iso[:7]`) — a plain
+    slice, not a parsed date, so this only ever needs to format that one
+    shape, not handle arbitrary date strings."""
+    year, month = month_key.split("-")
+    if lang == "zh":
+        return f"{year}年{int(month)}月"
+    return f"{_EN_MONTH_NAMES[int(month) - 1]} {year}"
+
+
 def _display_value(value: object, t: dict[str, str]) -> str:
     if isinstance(value, list):
         return ", ".join(str(v) for v in value) if value else "—"
@@ -157,5 +173,70 @@ def build_site(store: DirectoryStore, output_dir: Path, now_iso: str, lang: Lang
         entity_dir.mkdir(parents=True, exist_ok=True)
         (entity_dir / "index.html").write_text(
             entity_template.render(entity=view, generated_at=now_iso, t=t, html_lang=html_lang, lang=lang),
+            encoding="utf-8",
+        )
+
+    _build_archive(store, output_dir, env, t, html_lang, lang)
+
+
+def _build_archive(
+    store: DirectoryStore, output_dir: Path, env: Environment, t: dict[str, str], html_lang: str, lang: Lang
+) -> None:
+    """Renders the monthly archive tree (/archive/, /archive/{month}/) from
+    `archive_snapshots` — a separate, denormalized table (see store.py),
+    not a live query, so every past month's page renders exactly what was
+    true when it was snapshotted even after categories/entities change
+    later. Re-rendered in full on every build (cheap — it's templating
+    over already-computed rows, no network calls), which is deliberate:
+    template/styling changes should apply retroactively to old archive
+    pages too, not freeze the HTML itself — only the DATA is frozen."""
+    months = store.archive_months()
+
+    archive_index_template = env.get_template("archive_index.html.jinja")
+    month_views = [{"month_key": m, "label": _month_label(m, lang)} for m in months]
+    archive_dir = output_dir / "archive"
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    (archive_dir / "index.html").write_text(
+        archive_index_template.render(months=month_views, t=t, html_lang=html_lang, lang=lang),
+        encoding="utf-8",
+    )
+
+    archive_month_template = env.get_template("archive_month.html.jinja")
+    for month_key in months:
+        rows = store.archive_snapshot_for_month(month_key)
+        categories_by_id: dict[str, dict] = {}
+        for r in rows:
+            cat = categories_by_id.setdefault(
+                r["category_id"],
+                {
+                    "category_id": r["category_id"],
+                    "name": t_content(r["category_name"], lang),
+                    "definition": t_content(r["category_definition"], lang),
+                    "entities": [],
+                },
+            )
+            cat["entities"].append(
+                {
+                    "slug": slugify(r["canonical_name"]),
+                    "canonical_name": r["canonical_name"],
+                    "tagline": t_content(r["tagline"], lang) if r["tagline"] else r["tagline"],
+                    "score": r["score"],
+                    "rank": r["rank"],
+                    "positive_factors": json.loads(r["positive_factors_json"]),
+                    "negative_factors": json.loads(r["negative_factors_json"]),
+                }
+            )
+
+        month_dir = archive_dir / month_key
+        month_dir.mkdir(parents=True, exist_ok=True)
+        (month_dir / "index.html").write_text(
+            archive_month_template.render(
+                month_key=month_key,
+                month_label=_month_label(month_key, lang),
+                categories=sorted(categories_by_id.values(), key=lambda c: c["name"]),
+                t=t,
+                html_lang=html_lang,
+                lang=lang,
+            ),
             encoding="utf-8",
         )

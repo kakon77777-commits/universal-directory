@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .i18n import DEFAULT_LANG, SUPPORTED_LANGS
 from .ingest import ingest
+from .scoring import snapshot_month
 from .sitegen import build_site
 from .store import DirectoryStore
 
@@ -48,6 +49,13 @@ def _build_all_languages(store: DirectoryStore, site_dir: Path, now_iso: str) ->
     if site_dir.exists():
         shutil.rmtree(site_dir)
     site_dir.mkdir(parents=True, exist_ok=True)
+
+    # Month-keyed, not per-build: repeated builds within the same calendar
+    # month just refresh that month's snapshot; the month boundary is what
+    # actually freezes a past month (see scoring.snapshot_month's own
+    # docstring) — landing on the site still only ever shows the live,
+    # current-state pages generated below, the archive is a separate tree.
+    snapshot_month(store, month_key=now_iso[:7], now_iso=now_iso)
 
     for lang in SUPPORTED_LANGS:
         target = site_dir if lang == DEFAULT_LANG else site_dir / lang
