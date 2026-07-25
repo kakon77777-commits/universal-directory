@@ -121,3 +121,142 @@ entities:
     github_repo: kakon77777-commits/ai-web-research
     primary_category: ai-crawler
     license_hint: MIT
+
+  # 2026-07-25 expansion: four more categories from doc2's Appendix C
+  # "AI 與自動化" list. GitHub paths below are the redirect-resolved
+  # canonical org/repo (verified live via `gh api`, not guessed) —
+  # notably Block's Goose now lives under `aaif-goose/goose` and SST's
+  # opencode under `anomalyco/opencode`, not their original org names.
+
+  - canonical_name: Llama
+    entity_type: open_weight_model
+    tagline: "Meta's family of open-weight large language models"
+    github_repo: meta-llama/llama-models
+    primary_category: general-models
+    license_hint: "Llama Community License"
+
+  - canonical_name: Qwen
+    entity_type: open_weight_model
+    tagline: "Alibaba's open-weight large language model family"
+    github_repo: QwenLM/Qwen
+    primary_category: general-models
+    license_hint: Apache-2.0
+
+  - canonical_name: DeepSeek-V3
+    entity_type: open_weight_model
+    tagline: "DeepSeek's open-weight mixture-of-experts language model"
+    github_repo: deepseek-ai/DeepSeek-V3
+    primary_category: general-models
+    license_hint: MIT
+
+  - canonical_name: Gemma
+    entity_type: open_weight_model
+    tagline: "Google DeepMind's family of lightweight open-weight models"
+    github_repo: google-deepmind/gemma
+    primary_category: general-models
+    license_hint: Apache-2.0
+
+  - canonical_name: Continue
+    entity_type: open_source_tool
+    tagline: "Open-source AI code assistant for any IDE"
+    github_repo: continuedev/continue
+    primary_category: coding-agents
+    license_hint: Apache-2.0
+
+  - canonical_name: Aider
+    entity_type: open_source_tool
+    tagline: "AI pair programming in your terminal"
+    github_repo: Aider-AI/aider
+    primary_category: coding-agents
+    license_hint: Apache-2.0
+
+  - canonical_name: Goose
+    entity_type: open_source_tool
+    tagline: "Open-source, extensible AI agent that installs, executes, edits, and tests code"
+    github_repo: aaif-goose/goose
+    primary_category: coding-agents
+    license_hint: Apache-2.0
+
+  - canonical_name: opencode
+    entity_type: open_source_tool
+    tagline: "Open-source terminal coding agent"
+    github_repo: anomalyco/opencode
+    primary_category: coding-agents
+    license_hint: MIT
+
+  - canonical_name: OpenHands
+    entity_type: open_source_tool
+    tagline: "AI agent platform for autonomous software development"
+    github_repo: OpenHands/OpenHands
+    primary_category: coding-agents
+    license_hint: MIT
+
+  - canonical_name: Ollama
+    entity_type: open_source_tool
+    tagline: "Run large language models locally"
+    github_repo: ollama/ollama
+    primary_category: local-model-tools
+    license_hint: MIT
+
+  - canonical_name: llama.cpp
+    entity_type: open_source_tool
+    tagline: "LLM inference in C/C++, runs on commodity hardware"
+    github_repo: ggml-org/llama.cpp
+    primary_category: local-model-tools
+    license_hint: MIT
+
+  - canonical_name: vLLM
+    entity_type: open_source_tool
+    tagline: "High-throughput, memory-efficient inference and serving engine for LLMs"
+    github_repo: vllm-project/vllm
+    primary_category: local-model-tools
+    license_hint: Apache-2.0
+
+  - canonical_name: SGLang
+    entity_type: open_source_tool
+    tagline: "High-performance serving framework for language and multimodal models"
+    github_repo: sgl-project/sglang
+    primary_category: local-model-tools
+    license_hint: Apache-2.0
+
+  - canonical_name: Text Generation WebUI
+    entity_type: open_source_tool
+    tagline: "Open-source desktop app and web UI for running local LLMs"
+    github_repo: oobabooga/textgen
+    primary_category: local-model-tools
+    license_hint: AGPL-3.0
+
+  - canonical_name: Qdrant
+    entity_type: open_source_tool
+    tagline: "Vector similarity search engine and database"
+    github_repo: qdrant/qdrant
+    primary_category: vector-databases
+    license_hint: Apache-2.0
+
+  - canonical_name: Milvus
+    entity_type: open_source_tool
+    tagline: "Open-source vector database built for scalable similarity search"
+    github_repo: milvus-io/milvus
+    primary_category: vector-databases
+    license_hint: Apache-2.0
+
+  - canonical_name: Weaviate
+    entity_type: open_source_tool
+    tagline: "Open-source vector database with built-in ML model integrations"
+    github_repo: weaviate/weaviate
+    primary_category: vector-databases
+    license_hint: BSD-3-Clause
+
+  - canonical_name: Chroma
+    entity_type: open_source_tool
+    tagline: "Open-source embedding database for AI applications"
+    github_repo: chroma-core/chroma
+    primary_category: vector-databases
+    license_hint: Apache-2.0
+
+  - canonical_name: pgvector
+    entity_type: open_source_tool
+    tagline: "Open-source vector similarity search extension for PostgreSQL"
+    github_repo: pgvector/pgvector
+    primary_category: vector-databases
+    license_hint: "PostgreSQL License"

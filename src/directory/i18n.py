@@ -122,6 +122,19 @@ CONTENT_ZH: dict[str, str] = {
     "and generate cited reports.": "自動搜尋、閱讀、交叉查證多來源並生成附引用報告的研究型 Agent。",
     "Platforms providing scheduling, skills, multi-agent routing, and long-running "
     "control planes.": "提供排程、技能、多 Agent 路由與長時間運行控制平面的平台。",
+    # categories, 2026-07-25 expansion
+    "General-Purpose Language Models": "通用大型語言模型",
+    "Open-weight large language models released by major AI labs, usable outside any "
+    "single vendor's hosted API.": "由主要 AI 實驗室釋出的開放權重大型語言模型，可脫離任何單一廠商的託管 API 使用。",
+    "AI Coding Agents": "AI 程式開發 Agent",
+    "Agents and assistants that read, write, and execute code autonomously or "
+    "semi-autonomously inside a developer's own environment.": "在開發者自己的環境中自主或半自主地閱讀、撰寫與執行程式碼的 Agent 與助理。",
+    "Local Model Tools": "本地模型工具",
+    "Runtimes, servers, and interfaces for running language models on your own "
+    "hardware instead of a hosted API.": "在自有硬體上執行語言模型的執行環境、伺服器與介面，取代託管 API。",
+    "Vector Databases": "向量資料庫",
+    "Databases and search engines purpose-built for storing and querying "
+    "high-dimensional embedding vectors.": "專為儲存與查詢高維嵌入向量而設計的資料庫與搜尋引擎。",
     # entity taglines
     "Local, self-hosted, LLM-friendly web crawler": "本地、自架、LLM-Friendly Web Crawler",
     "Full Web Context API and agent web-data platform": "完整 Web Context API 與 Agent Web Data 平台",
@@ -141,6 +154,26 @@ CONTENT_ZH: dict[str, str] = {
     "Enterprise-grade agent command center": "公司級 Agent Command Center",
     "Deterministic, LLM-independent robots/sitemap-aware crawler producing LLM-ready "
     "Markdown with a resumable frontier": "確定性、無 LLM 依賴的 robots/sitemap-aware 爬蟲，輸出 LLM 可用 Markdown 與可續傳 frontier",
+    # entity taglines, 2026-07-25 expansion
+    "Meta's family of open-weight large language models": "Meta 的開放權重大型語言模型家族",
+    "Alibaba's open-weight large language model family": "阿里巴巴的開放權重大型語言模型家族",
+    "DeepSeek's open-weight mixture-of-experts language model": "DeepSeek 的開放權重混合專家（MoE）語言模型",
+    "Google DeepMind's family of lightweight open-weight models": "Google DeepMind 的輕量開放權重模型家族",
+    "Open-source AI code assistant for any IDE": "適用於任何 IDE 的開源 AI 程式碼助理",
+    "AI pair programming in your terminal": "在終端機中進行 AI 結對程式設計",
+    "Open-source, extensible AI agent that installs, executes, edits, and tests code": "可安裝、執行、編輯與測試程式碼的開源可擴充 AI Agent",
+    "Open-source terminal coding agent": "開源終端機程式開發 Agent",
+    "AI agent platform for autonomous software development": "用於自主軟體開發的 AI Agent 平台",
+    "Run large language models locally": "在本地執行大型語言模型",
+    "LLM inference in C/C++, runs on commodity hardware": "以 C/C++ 實作的 LLM 推論引擎，可在一般硬體上運行",
+    "High-throughput, memory-efficient inference and serving engine for LLMs": "高吞吐量、高記憶體效率的 LLM 推論與服務引擎",
+    "High-performance serving framework for language and multimodal models": "高效能的語言與多模態模型服務框架",
+    "Open-source desktop app and web UI for running local LLMs": "用於執行本地 LLM 的開源桌面應用程式與網頁介面",
+    "Vector similarity search engine and database": "向量相似度搜尋引擎與資料庫",
+    "Open-source vector database built for scalable similarity search": "為可擴展相似度搜尋而打造的開源向量資料庫",
+    "Open-source vector database with built-in ML model integrations": "內建機器學習模型整合的開源向量資料庫",
+    "Open-source embedding database for AI applications": "為 AI 應用打造的開源嵌入資料庫",
+    "Open-source vector similarity search extension for PostgreSQL": "PostgreSQL 的開源向量相似度搜尋擴充套件",
 }
 
 

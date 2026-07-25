@@ -23,3 +23,26 @@ categories:
     name: "Agent Orchestration Platforms"
     definition: "Platforms providing scheduling, skills, multi-agent routing, and long-running control planes."
     ranking_profile: open_source_ai_tools_v1
+
+  # 2026-07-25: expanded beyond doc1's own crawler/agent-tool catalog into
+  # three more of doc2's (通用動態策展目錄 whitepaper) own Appendix C "AI 與
+  # 自動化" sub-categories — Neo: "本來MD文件就不只這些...現在有點少了。"
+  - category_id: general-models
+    name: "General-Purpose Language Models"
+    definition: "Open-weight large language models released by major AI labs, usable outside any single vendor's hosted API."
+    ranking_profile: open_source_ai_tools_v1
+
+  - category_id: coding-agents
+    name: "AI Coding Agents"
+    definition: "Agents and assistants that read, write, and execute code autonomously or semi-autonomously inside a developer's own environment."
+    ranking_profile: open_source_ai_tools_v1
+
+  - category_id: local-model-tools
+    name: "Local Model Tools"
+    definition: "Runtimes, servers, and interfaces for running language models on your own hardware instead of a hosted API."
+    ranking_profile: open_source_ai_tools_v1
+
+  - category_id: vector-databases
+    name: "Vector Databases"
+    definition: "Databases and search engines purpose-built for storing and querying high-dimensional embedding vectors."
+    ranking_profile: open_source_ai_tools_v1
