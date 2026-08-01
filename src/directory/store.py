@@ -81,19 +81,23 @@ CREATE TABLE IF NOT EXISTS ranking_results (
     calculated_at TEXT NOT NULL
 );
 
--- Monthly historical archive (doc section 10/70: 版本歷史/從目錄到觀測系統 —
--- a directory that keeps its own history becomes a record of how a domain
--- evolves, not just its current state). Keyed by (month_key, category_id,
--- entity_id) so re-snapshotting the SAME month (repeated builds within
--- that month) upserts in place, while a NEW month_key just adds new rows
--- without ever touching a past month's — the archive freezes itself
--- naturally at each calendar month boundary, no separate "already
--- snapshotted this month" bookkeeping needed. category_name/definition are
+-- Multi-granularity historical archive (doc section 10/70: 版本歷史/從目錄到
+-- 觀測系統 — a directory that keeps its own history becomes a record of how
+-- a domain evolves, not just its current state). One shared table across
+-- three granularities (week/month/year — Neo: "先以周為單位。然後才是月，
+-- 年"), keyed by (granularity, period_key, category_id, entity_id) so
+-- re-snapshotting the SAME period (repeated builds within it) upserts in
+-- place, while a NEW period_key just adds new rows without ever touching
+-- a past period's — the archive freezes itself naturally at each period
+-- boundary regardless of granularity, no separate "already snapshotted
+-- this period" bookkeeping needed. period_key formats: week "2026-W31"
+-- (ISO week), month "2026-08", year "2026". category_name/definition are
 -- denormalized (copied at snapshot time, not joined live) so a later
 -- rename/removal of a category in categories.yaml can't retroactively
 -- change what an old snapshot says it was.
 CREATE TABLE IF NOT EXISTS archive_snapshots (
-    month_key TEXT NOT NULL,
+    granularity TEXT NOT NULL,
+    period_key TEXT NOT NULL,
     category_id TEXT NOT NULL,
     category_name TEXT NOT NULL,
     category_definition TEXT NOT NULL,
@@ -105,9 +109,37 @@ CREATE TABLE IF NOT EXISTS archive_snapshots (
     positive_factors_json TEXT NOT NULL,
     negative_factors_json TEXT NOT NULL,
     snapshotted_at TEXT NOT NULL,
-    PRIMARY KEY (month_key, category_id, entity_id)
+    PRIMARY KEY (granularity, period_key, category_id, entity_id)
 );
 """
+
+# 2026-08-01: archive_snapshots grew a `granularity` column (was
+# month-only, keyed just on month_key). A store opened against an
+# existing DB from before that change still has the old shape — migrate
+# its rows forward (as granularity='month') rather than silently
+# dropping real historical data nobody can regenerate identically once
+# entities.yaml moves on.
+def _migrate_archive_snapshots_if_needed(conn: sqlite3.Connection) -> None:
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(archive_snapshots)").fetchall()}
+    if not cols or "granularity" in cols or "month_key" not in cols:
+        return  # table doesn't exist yet, already new shape, or unrecognized shape
+    conn.execute("ALTER TABLE archive_snapshots RENAME TO archive_snapshots_pre_granularity")
+    conn.executescript(_SCHEMA)  # recreates archive_snapshots in the new shape
+    conn.execute(
+        """
+        INSERT INTO archive_snapshots (
+            granularity, period_key, category_id, category_name, category_definition,
+            entity_id, canonical_name, tagline, score, rank,
+            positive_factors_json, negative_factors_json, snapshotted_at
+        )
+        SELECT 'month', month_key, category_id, category_name, category_definition,
+               entity_id, canonical_name, tagline, score, rank,
+               positive_factors_json, negative_factors_json, snapshotted_at
+        FROM archive_snapshots_pre_granularity
+        """
+    )
+    conn.execute("DROP TABLE archive_snapshots_pre_granularity")
+    conn.commit()
 
 
 def _id_for(*parts: str) -> str:
@@ -142,6 +174,7 @@ class DirectoryStore:
         self._conn = sqlite3.connect(db_path)
         self._conn.executescript(_SCHEMA)
         self._conn.commit()
+        _migrate_archive_snapshots_if_needed(self._conn)
 
     def close(self) -> None:
         self._conn.close()
@@ -349,11 +382,12 @@ class DirectoryStore:
         )
         return cur.fetchall()
 
-    # -- monthly archive ---------------------------------------------------
+    # -- multi-granularity archive -------------------------------------------
 
     def write_archive_snapshot_row(
         self,
-        month_key: str,
+        granularity: str,
+        period_key: str,
         category_id: str,
         category_name: str,
         category_definition: str,
@@ -369,11 +403,11 @@ class DirectoryStore:
         self._conn.execute(
             """
             INSERT INTO archive_snapshots (
-                month_key, category_id, category_name, category_definition,
+                granularity, period_key, category_id, category_name, category_definition,
                 entity_id, canonical_name, tagline, score, rank,
                 positive_factors_json, negative_factors_json, snapshotted_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(month_key, category_id, entity_id) DO UPDATE SET
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(granularity, period_key, category_id, entity_id) DO UPDATE SET
                 category_name=excluded.category_name,
                 category_definition=excluded.category_definition,
                 canonical_name=excluded.canonical_name,
@@ -385,26 +419,27 @@ class DirectoryStore:
                 snapshotted_at=excluded.snapshotted_at
             """,
             (
-                month_key, category_id, category_name, category_definition,
+                granularity, period_key, category_id, category_name, category_definition,
                 entity_id, canonical_name, tagline, score, rank,
                 positive_factors_json, negative_factors_json, snapshotted_at,
             ),
         )
         self._conn.commit()
 
-    def archive_months(self) -> list[str]:
+    def archive_periods(self, granularity: str) -> list[str]:
         cur = self._conn.execute(
-            "SELECT DISTINCT month_key FROM archive_snapshots ORDER BY month_key DESC"
+            "SELECT DISTINCT period_key FROM archive_snapshots WHERE granularity = ? ORDER BY period_key DESC",
+            (granularity,),
         )
         return [row[0] for row in cur.fetchall()]
 
-    def archive_snapshot_for_month(self, month_key: str) -> list[sqlite3.Row]:
+    def archive_snapshot_for_period(self, granularity: str, period_key: str) -> list[sqlite3.Row]:
         self._conn.row_factory = sqlite3.Row
         cur = self._conn.execute(
             """
-            SELECT * FROM archive_snapshots WHERE month_key = ?
+            SELECT * FROM archive_snapshots WHERE granularity = ? AND period_key = ?
             ORDER BY category_name ASC, rank ASC
             """,
-            (month_key,),
+            (granularity, period_key),
         )
         return cur.fetchall()

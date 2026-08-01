@@ -8,17 +8,18 @@
   <p class="muted" style="margin-bottom:0;">{{ t.archive_index_intro }}</p>
 </div>
 
-{% if months %}
+{% for section in sections %}
 <div class="card">
+  <h2 style="margin-top:0;">{{ section.heading }}</h2>
+  {% if section.periods %}
   <ul class="archive-month-list">
-    {% for m in months %}
-    <li><a href="/archive/{{ m.month_key }}/">{{ m.label }}</a></li>
+    {% for p in section.periods %}
+    <li><a href="/archive/{{ section.granularity }}/{{ p.period_key }}/">{{ p.label }}</a></li>
     {% endfor %}
   </ul>
+  {% else %}
+  <p class="muted" style="margin:0;">{{ t.archive_no_periods }}</p>
+  {% endif %}
 </div>
-{% else %}
-<div class="card">
-  <p class="muted" style="margin:0;">{{ t.archive_no_months }}</p>
-</div>
-{% endif %}
+{% endfor %}
 {% endblock %}

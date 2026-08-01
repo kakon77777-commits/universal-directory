@@ -1,11 +1,11 @@
 {% extends "base.html.jinja" %}
-{% block title %}{{ t.archive_month_of.format(month=month_label) }} — {{ t.site_title }}{% endblock %}
+{% block title %}{{ t.archive_period_of.format(period=period_label) }} — {{ t.site_title }}{% endblock %}
 {% block header_right %}<a href="/archive/">{{ t.archive_index_title }}</a>{% endblock %}
 
 {% block content %}
 <div class="card archive-banner">
   <p style="margin:0;">
-    {{ t.archive_banner.format(month=month_label) }}
+    {{ t.archive_banner.format(period=period_label) }}
     <a href="/">{{ t.archive_view_latest }}</a>
   </p>
 </div>

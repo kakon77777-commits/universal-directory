@@ -63,17 +63,20 @@ UI_STRINGS: dict[Lang, dict[str, str]] = {
         "yes": "Yes",
         "no": "No",
         "nav_archive": "Archive",
-        "archive_index_title": "Monthly Archive",
+        "archive_index_title": "Historical Archive",
         "archive_index_intro": (
-            "A frozen, month-by-month snapshot of every category's rankings — since this "
-            "directory is mostly AI tools and models, it doubles as a running record of how "
-            "that field itself evolves. Landing on the site always shows the current "
-            "ranking; this is the history behind it."
+            "A frozen, week-by-week (then month, then year) snapshot of every category's "
+            "rankings — since this directory is mostly AI tools and models, it doubles as a "
+            "running record of how that field itself evolves. Landing on the site always "
+            "shows the current ranking; this is the history behind it."
         ),
-        "archive_no_months": "No archived snapshots yet — check back after this month ends.",
-        "archive_banner": "You're viewing an archived snapshot from {month}, not the current ranking.",
+        "archive_by_week": "By Week",
+        "archive_by_month": "By Month",
+        "archive_by_year": "By Year",
+        "archive_no_periods": "No archived snapshots yet at this granularity — check back later.",
+        "archive_banner": "You're viewing an archived snapshot from {period}, not the current ranking.",
         "archive_view_latest": "View the current ranking →",
-        "archive_month_of": "Archived snapshot: {month}",
+        "archive_period_of": "Archived snapshot: {period}",
     },
     "zh": {
         "site_title": "通用動態策展目錄",
@@ -111,15 +114,19 @@ UI_STRINGS: dict[Lang, dict[str, str]] = {
         "yes": "是",
         "no": "否",
         "nav_archive": "歷史存檔",
-        "archive_index_title": "月度歷史存檔",
+        "archive_index_title": "歷史存檔",
         "archive_index_intro": (
-            "每個分類排名的月度凍結快照——因為這個目錄收錄的大多是 AI 工具與模型，它同時也成了"
-            "這個領域自身演化的紀錄。進站看到的永遠是目前排名；這裡是排名背後的歷史。"
+            "每個分類排名的凍結快照——先以週為單位，再是月、年。因為這個目錄收錄的大多是 AI "
+            "工具與模型，它同時也成了這個領域自身演化的紀錄。進站看到的永遠是目前排名；這裡是"
+            "排名背後的歷史。"
         ),
-        "archive_no_months": "目前還沒有歷史存檔——這個月結束後再回來看看。",
-        "archive_banner": "你正在檢視 {month} 的歷史存檔快照，不是目前的排名。",
+        "archive_by_week": "依週",
+        "archive_by_month": "依月",
+        "archive_by_year": "依年",
+        "archive_no_periods": "這個週期粒度目前還沒有存檔——之後再回來看看。",
+        "archive_banner": "你正在檢視 {period} 的歷史存檔快照，不是目前的排名。",
         "archive_view_latest": "查看目前排名 →",
-        "archive_month_of": "歷史存檔：{month}",
+        "archive_period_of": "歷史存檔：{period}",
     },
 }
 

@@ -12,7 +12,7 @@ from pathlib import Path
 
 from .i18n import DEFAULT_LANG, SUPPORTED_LANGS
 from .ingest import ingest
-from .scoring import snapshot_month
+from .scoring import snapshot_period
 from .sitegen import build_site
 from .store import DirectoryStore
 
@@ -45,17 +45,34 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _period_keys(now_iso: str) -> dict[str, str]:
+    """week uses ISO 8601 week numbering (Mon-Sun) — Neo's own cadence is
+    "每周日更新" (update every Sunday), and since Sunday is the last day of
+    an ISO week, a Sunday build's date always falls in the week it's
+    closing out, no special-casing needed."""
+    d = dt.date.fromisoformat(now_iso[:10])
+    iso_year, iso_week, _ = d.isocalendar()
+    return {
+        "week": f"{iso_year}-W{iso_week:02d}",
+        "month": now_iso[:7],
+        "year": now_iso[:4],
+    }
+
+
 def _build_all_languages(store: DirectoryStore, site_dir: Path, now_iso: str) -> None:
     if site_dir.exists():
         shutil.rmtree(site_dir)
     site_dir.mkdir(parents=True, exist_ok=True)
 
-    # Month-keyed, not per-build: repeated builds within the same calendar
-    # month just refresh that month's snapshot; the month boundary is what
-    # actually freezes a past month (see scoring.snapshot_month's own
+    # Period-keyed, not per-build: repeated builds within the same period
+    # just refresh that period's snapshot; the period boundary is what
+    # actually freezes a past one (see scoring.snapshot_period's own
     # docstring) — landing on the site still only ever shows the live,
     # current-state pages generated below, the archive is a separate tree.
-    snapshot_month(store, month_key=now_iso[:7], now_iso=now_iso)
+    # Neo: "先以周為單位。然後才是月，年" — week is the primary update
+    # cadence, month/year are coarser tiers over the same data.
+    for granularity, period_key in _period_keys(now_iso).items():
+        snapshot_period(store, granularity, period_key, now_iso)
 
     for lang in SUPPORTED_LANGS:
         target = site_dir if lang == DEFAULT_LANG else site_dir / lang
